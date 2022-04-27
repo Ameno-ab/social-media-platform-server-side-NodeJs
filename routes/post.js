@@ -12,7 +12,9 @@ import {
   deletePost,
   newsFeed,
   likePost,
-  unlikePost
+  unlikePost,
+  addComment,
+  removeComment,
 } from "../controllers/post";
 
 
@@ -30,4 +32,6 @@ router.delete("/delete-post/:_id",requireSignin,canEditDeletePost,deletePost);
 router.get('/news-feed', requireSignin ,newsFeed);
 router.put('/like-post' ,requireSignin,likePost);
 router.put('/unlike-post' ,requireSignin,unlikePost);
+router.put('/add-comment',requireSignin,addComment);
+router.put('/remove-comment',requireSignin,removeComment);
 module.exports = router;
