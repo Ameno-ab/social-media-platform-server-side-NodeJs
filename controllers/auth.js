@@ -212,20 +212,49 @@ export const userFollowing = async (req, res) => {
 };
 export const removeFollower = async (req, res, next) => {
   try {
-   const user= await User.findByIdAndUpdate(req.body._id,{
-     $pull:{followers:req.user._id},
-   });
-next();
+    const user = await User.findByIdAndUpdate(req.body._id, {
+      $pull: { followers: req.user._id },
+    });
+    next();
   } catch (err) {
     console.log(err);
   }
 };
 export const userUnfollow = async (req, res) => {
   try {
-    const user= await User.findByIdAndUpdate(req.user._id,{
-      $pull:{following:req.body._id},
-    },{new:true});
+    const user = await User.findByIdAndUpdate(
+      req.user._id,
+      {
+        $pull: { following: req.body._id },
+      },
+      { new: true }
+    );
     res.json(user);
+  } catch (err) {
+    console.log(err);
+  }
+};
+export const searchUser = async (req, res) => {
+  const { query } = req.params;
+
+  if (!query) return;
+  try {
+    const user = await User.find({
+      $or: [
+        { name: { $regex: query, $options: "i" } },
+        { username: { $regex: query, $options: "i" } },
+      ],
+    }).select("-password -secret");
+    res.json(user);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getUser = async (req, res) => {
+  try {
+    const user= await User.findOne({username:req.params.username}).select("-password -secret");
+    res.json(user)
   } catch (err) {
     console.log(err);
   }
