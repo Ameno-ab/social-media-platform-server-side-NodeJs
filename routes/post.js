@@ -2,7 +2,7 @@ import express from "express";
 import formidable from "express-formidable";
 
 const router = express.Router();
-import { requireSignin, canEditDeletePost } from "../middlewares";
+import { requireSignin, canEditDeletePost,isAdmin } from "../middlewares";
 import {
   createPost,
   uploadImage,
@@ -45,5 +45,11 @@ router.get("/total-posts", totalPosts);
 
 router.get("/posts", posts);
 
-router.get('/post/:_id',getPost)
+router.get('/post/:_id',getPost);
+router.delete(
+  "/admin/delete-post/:_id",
+  requireSignin,
+  isAdmin,
+  deletePost
+);
 module.exports = router;

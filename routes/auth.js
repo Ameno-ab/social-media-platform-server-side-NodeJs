@@ -1,7 +1,7 @@
 import express from "express";
 
 const router = express.Router();
-import { requireSignin } from "../middlewares";
+import {  requireSignin, isAdmin } from "../middlewares";
 import {
   register,
   login,
@@ -18,6 +18,7 @@ import {
   getUser
 } from "../controllers/auth";
 
+
 router.post("/register", register);
 router.post("/login", login);
 router.get("/current-user", requireSignin, currentUser);
@@ -32,5 +33,7 @@ router.get("/user-following", requireSignin, userFollowing);
 router.get('/search-user/:query' ,searchUser);
 
 router.get('/user/:username', getUser)
+
+router.get('/current-admin', requireSignin, isAdmin ,currentUser);
 
 module.exports = router;
